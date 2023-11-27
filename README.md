@@ -11,3 +11,6 @@
         "dev":"srever.js"
     }
     >>npm run dev
+
+## Express serever creation
+    >> install express ( npm i express )

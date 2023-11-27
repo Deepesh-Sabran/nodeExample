@@ -1,72 +1,46 @@
 // importing http module
-const http = require("http");
+const express = require("express");
+
+// we need to initialize express
+const app = express();
+// after initializing we need to use that particular app
+app.use(express.json());    //we use  .json because, we are declaring our express is totaly in json format
 
 // declaring port
 const port = 8081;
 
-const toDoList = ["Learn", "applyThings", "succed"];
+const toDoList = ["Jay", "Shree", "Ram"];
 
-http.createServer((req, res) => {
-    const {method, url} = req;
-    if(url === "/todos"){
-        // GET Method
-        if(method === "GET") {
-            res.writeHead(200, {"content-type":"text/html"});
-            res.write(toDoList.toString());
-            res.end();
-        }
-        // POST Method
-        else if(method === "POST") {
-            let data = "";
-            req.on("error", (err) => {
-                console.log(err);
-            }).on("data", (chunk) => {
-                data += chunk;
-                console.log("chunk: ", chunk);
-            }).on("end", () => {
-                data = JSON.parse(data);
-                console.log("data: ", data);
+// creating server (req, res) & checking URL togather
+// get method
+app.get("/todos", (req, res) => {
+    res.status(200).send(toDoList.toString());
+});
 
-                // add new element to the array using POST Method
-                let newTodo = toDoList;
-                // here in the POST body whatever the key-name we use, we've to use the same here eg. item
-                newTodo.push(data.item);
-            });
-        } 
-        // DELETE method
-        else if(method === "DELETE") {
-            let data = "";
-            req.on("error", (err) => {
-                console.log(err);
-            }).on("data", (chunk) => {
-                data += chunk;
-            }).on("end", () => {
-                data = JSON.parse(data);
-                let deleteItem = data.item;
-                console.log(deleteItem);
-                // for(let i=0; i<toDoList.length; i++) {
-                //     if(toDoList[i] === deleteItem) {
-                //         toDoList.splice(i, 1);
-                //         break;
-                //     }
-                // }
-                toDoList.find((elem, index) => {
-                    if(elem === deleteItem) {
-                        toDoList.splice(index, 1);
-                    } else {
-                        console.error("Match not found !!");
-                    }
-                })
-            });
-        } else {
-            res.writeHead(501);
+// post method
+app.post("/todos", (req, res) => {
+    let newItem = req.body.item;
+    toDoList.push(newItem);
+    res.status(201).send({message: "Task added successfully"});
+});
+
+// delete method
+app.delete("/todos", (req, res) => {
+    const deleteItem = req.body.item;
+    toDoList.find((elem, index) => {
+        if(elem === deleteItem) {
+            toDoList.splice(index, 1);
         }
-    } else {
-        res.writeHead(404);
-    }
-    res.end();
-})
-//listening to the port
-.listen(port, () => {
-    console.log(`Node JS server started, running on port: ${port}`);
+    });
+    res.status(202).send({message: "item deleted"});
+});
+
+// all method
+app.all("*", (req, res) => {
+    res.status(501).send({message: "check your URL"});
+});
+
+// Listening to the port
+app.listen(port, () => {
+    console.log(`Server startedd via Express & running on port: ${port}`);
 });
