@@ -1,1 +1,6 @@
-## server creation >> npm init
+## server creation >> npm init after that hit enter & fill the required queries
+
+## for running the server
+    >> node server.js
+    >> npm start (add start in your package. json)
+    npm run devil (add devil on your package.json)

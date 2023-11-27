@@ -1,0 +1,21 @@
+{
+  "name": "demonodeserver",
+  "version": "1.0.0",
+  "description": "server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "devil": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "(https://github.com/Deepesh-Sabran/nodeExample.git)"
+  },
+  "author": "Deepesh",
+  "license": "ISC",
+  "dependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
