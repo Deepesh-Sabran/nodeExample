@@ -4,7 +4,7 @@ const http = require("http");
 // declaring port
 const port = 8081;
 
-const toDoList = ["Learn", " applyThings", " succed"];
+const toDoList = ["Learn", "applyThings", "succed"];
 
 http.createServer((req, res) => {
     const {method, url} = req;
@@ -32,7 +32,33 @@ http.createServer((req, res) => {
                 // here in the POST body whatever the key-name we use, we've to use the same here eg. item
                 newTodo.push(data.item);
             });
-        }  else {
+        } 
+        // DELETE method
+        else if(method === "DELETE") {
+            let data = "";
+            req.on("error", (err) => {
+                console.log(err);
+            }).on("data", (chunk) => {
+                data += chunk;
+            }).on("end", () => {
+                data = JSON.parse(data);
+                let deleteItem = data.item;
+                console.log(deleteItem);
+                // for(let i=0; i<toDoList.length; i++) {
+                //     if(toDoList[i] === deleteItem) {
+                //         toDoList.splice(i, 1);
+                //         break;
+                //     }
+                // }
+                toDoList.find((elem, index) => {
+                    if(elem === deleteItem) {
+                        toDoList.splice(index, 1);
+                    } else {
+                        console.error("Match not found !!");
+                    }
+                })
+            });
+        } else {
             res.writeHead(501);
         }
     } else {
