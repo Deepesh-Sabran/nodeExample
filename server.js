@@ -4,9 +4,6 @@ const http = require("http");
 // declaring port
 const port = 8081;
 
-// declare an array
-const toDoList = ["Learn", " apply things", " Succed !!"];
-
 http.createServer((req, res) => {
     const {method, url} = req;
     if(method === "GET") {
